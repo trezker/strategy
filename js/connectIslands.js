@@ -44,23 +44,48 @@ var ConnectIslands = function(map) {
 			allLand.splice(0, 1);
 			isle = buildIsland(isle)
 			islands.push(isle);
-			for(i in isle) {
-				isle[i].isle = true;
-			}
 		}
 		return islands;
 	};
 
 	self.ConnectIslandPairs = function(islands) {
-		while(islands.length > 1) {
+		var pangea = islands[0];
+		islands.splice(toisland, 1);
+		while(islands.length > 0) {
+			var closestpairs = islands.map(function(i) {
+				return self.ClosestPairBetweenIslands(pangea, i);
+			});
 
+			var closestpair = closestpairs.reduce(function(prev, curr) {
+				return prev.distance < curr.distance ? prev : curr;
+			});
+			var toisland = islands.indexOf(closestpair.to)
+			pangea = pangea.concat(islands[toisland]);
+			islands.splice(toisland, 1);
 		}
 	};
 
+	self.ClosestPairBetweenIslands = function(from, to) {
+		var closestpair = { distance: Number.MAX_VALUE };
+		for(var i in from) {
+			var p1 = from[i];
+			var pairset = to.map(function(p2) {
+				var x = p1.point.x-p2.point.x;
+				var y = p1.point.y-p2.point.y;
+				return { p1: p1, p2: p2, to: to, distance: x*x+y*y };
+			});
+			var setclosestpair = pairset.reduce(function(prev, curr) {
+				return prev.distance < curr.distance ? prev : curr;
+			});
+			if(setclosestpair.distance < closestpair.distance) {
+				closestpair = setclosestpair;
+			}
+		}
+		return closestpair;
+	}
+
+
 	var allLand = self.AllLand();
-	console.log(allLand.length);
 	var islands = self.Islands(allLand);
-	console.log(allLand.length);
-	console.log(islands);
-	//self.ConnectIslandPairs(islands);
+	self.ConnectIslandPairs(islands);
 };
