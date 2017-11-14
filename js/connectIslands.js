@@ -62,6 +62,8 @@ var ConnectIslands = function(map) {
 			var toisland = islands.indexOf(closestpair.to)
 			pangea = pangea.concat(islands[toisland]);
 			islands.splice(toisland, 1);
+
+			self.Bridge(closestpair, pangea);
 		}
 	};
 
@@ -82,8 +84,24 @@ var ConnectIslands = function(map) {
 			}
 		}
 		return closestpair;
-	}
+	};
 
+	self.Bridge = function(pair, pangea) {
+		var neighborsAndDistances = pair.p1.neighbors.map(function(n) {
+			var x = n.point.x-pair.p2.point.x;
+			var y = n.point.y-pair.p2.point.y;
+			return { p: n, distance: x*x+y*y };
+		});
+		var closest = neighborsAndDistances.reduce(function(prev, curr) {
+			return prev.distance < curr.distance ? prev : curr;
+		}).p;
+		closest.water = false;
+		closest.ocean = false;
+		pangea.push(closest);
+		if(closest !== pair.p2) {
+			self.Bridge({ p1: pair.p2, p2: closest }, pangea);
+		}
+	};
 
 	var allLand = self.AllLand();
 	var islands = self.Islands(allLand);
