@@ -40,6 +40,11 @@ var Canvas = function(elementId) {
 		self.canvasContext.fillRect(point.x, point.y, 1, 1);
 	};
 
+	self.DrawRect = function(rect) {
+ 		self.canvasContext.fillStyle = rect.color;
+		self.canvasContext.fillRect(rect.x, rect.y, rect.w, rect.h);
+	};
+
 	self.DrawPolygon = function(polygon) {
  		self.canvasContext.lineWidth = 1.51;
 		self.canvasContext.strokeStyle = polygon.color;

@@ -4,7 +4,7 @@ var MapViewmodel = function() {
 	self.defaultMapParameters = {
 		width: 640,
 		height: 480,
-		numberOfPoints: 1000,
+		numberOfPoints: 100,
 		seed: 1,
 		numberOfLloydRelaxations: 2,
 		lakeThreshold: .3,
@@ -18,6 +18,7 @@ var MapViewmodel = function() {
 		
 		map.Generate();
 		ConnectIslands(map);
+		var temples = PlaceTemples(map);
 
 		var canvas = new Canvas("canvas");
 		canvas.Resize(map.settings.width, map.settings.height);
@@ -25,6 +26,7 @@ var MapViewmodel = function() {
 		map.DrawPolygons(canvas);
 		map.DrawPoints(canvas);
 		map.DrawEdges(canvas);
+		DrawTemples(temples, canvas)
 	};
 };
 

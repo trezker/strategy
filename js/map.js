@@ -410,4 +410,14 @@ var Map = function(settings) {
 			q.water = q.border || ((numLand != q.touches.length) && !q.coast);
 		}
 	};
+	
+	self.AllLand = function() {
+		var landcells = [];
+		for(i in self.centers) {
+			if(self.centers[i].water == false) {
+				landcells.push(self.centers[i]);
+			}
+		}
+		return landcells;
+	};
 };

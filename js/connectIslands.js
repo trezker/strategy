@@ -9,16 +9,6 @@ While more than one island
 	Merge the two islands
 */
 var ConnectIslands = function(map) {
-	self.AllLand = function() {
-		var landcells = [];
-		for(i in map.centers) {
-			if(map.centers[i].water == false) {
-				landcells.push(map.centers[i]);
-			}
-		}
-		return landcells;
-	};
-
 	self.Islands = function(allLand) {
 		var islands = [];
 		while(allLand.length > 0) {
@@ -103,7 +93,7 @@ var ConnectIslands = function(map) {
 		}
 	};
 
-	var allLand = self.AllLand();
+	var allLand = map.AllLand();
 	var islands = self.Islands(allLand);
 	self.ConnectIslandPairs(islands);
 };
