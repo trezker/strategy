@@ -19,6 +19,7 @@ var MapViewmodel = function() {
 		map.Generate();
 		ConnectIslands(map);
 		var temples = PlaceTemples(map);
+		var players = InitiatePlayers(temples);
 
 		var canvas = new Canvas("canvas");
 		canvas.Resize(map.settings.width, map.settings.height);

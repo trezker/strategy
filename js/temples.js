@@ -1,6 +1,9 @@
 var PlaceTemples = function(map) {
 	var allLand = map.AllLand();
 	var temples = allLand.sort(() => .5 - Math.random()).slice(0, 8);
+	for(var i in temples) {
+		temples[i].temple = "basic";
+	}
 	console.log(temples);
 	return temples;
 };
