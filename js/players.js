@@ -8,3 +8,18 @@ var InitiatePlayers = function(temples) {
  	}
  	return players;
 };
+
+var DrawSoldiers = function(map, canvas) {
+	for(var i in map.centers) {
+		var soldiers = map.centers[i].soldiers;
+		if(soldiers > 0) {
+			canvas.DrawText({
+				text: soldiers,
+				x: map.centers[i].point.x,
+				y: map.centers[i].point.y + 20,
+				color: "#000",
+				align: "center"
+			});
+		}
+	}
+};

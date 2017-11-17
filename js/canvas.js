@@ -58,4 +58,11 @@ var Canvas = function(elementId) {
 		self.canvasContext.fill();
 		self.canvasContext.stroke(); 		
 	};
+	
+	self.DrawText = function(text) {
+		self.canvasContext.fillStyle = text.color;
+		self.canvasContext.textAlign = text.align;
+		self.canvasContext.font = "12px Arial";
+		self.canvasContext.fillText(text.text, text.x, text.y); 	
+	};
 };

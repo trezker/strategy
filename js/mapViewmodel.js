@@ -28,6 +28,7 @@ var MapViewmodel = function() {
 		map.DrawPoints(canvas);
 		map.DrawEdges(canvas);
 		DrawTemples(temples, canvas)
+		DrawSoldiers(map, canvas);
 	};
 };
 
