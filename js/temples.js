@@ -4,13 +4,11 @@ var PlaceTemples = function(map) {
 	for(var i in temples) {
 		temples[i].temple = "basic";
 	}
-	console.log(temples);
 	return temples;
 };
 
 var DrawTemples = function(temples, canvas) {
 	for(var i in temples) {
-		console.log(temples[i]);
 		canvas.DrawRect({
 			x: temples[i].point.x - 5,
 			y: temples[i].point.y - 5,

@@ -21,7 +21,7 @@ var Canvas = function(elementId) {
 	self.DrawLines = function(lines) {
 		self.canvasContext.beginPath();		
 		self.canvasContext.strokeStyle = lines.color;
- 		self.canvasContext.lineWidth = 1;
+ 		self.canvasContext.lineWidth = lines.width;
 
 		for(l in lines.lines) {
 			var line = lines.lines[l];

@@ -66,7 +66,8 @@ var Map = function(settings) {
 		});
 		canvas.DrawLines({
 			color: "#000",
-			lines: lines
+			lines: lines,
+			width: 1
 		});
 	};
 

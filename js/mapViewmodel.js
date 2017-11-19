@@ -27,7 +27,8 @@ var MapViewmodel = function() {
 		map.DrawPolygons(canvas);
 		map.DrawPoints(canvas);
 		map.DrawEdges(canvas);
-		DrawTemples(temples, canvas)
+		DrawBorders(map, canvas);
+		DrawTemples(temples, canvas);
 		DrawSoldiers(map, canvas);
 	};
 };
