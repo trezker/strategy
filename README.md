@@ -1,3 +1,3 @@
-# mapgen2
-Generating maps using a voronoi structure at the base
+# Strategy
+Simple strategy game using html canvas.
 
