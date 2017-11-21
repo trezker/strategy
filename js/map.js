@@ -426,4 +426,16 @@ var Map = function(settings) {
 		}
 		return landcells;
 	};
+
+	self.NearestCell = function(x, y) {
+		var cellsWithDistance = self.centers.map(function(n) {
+			var xd = x - n.point.x;
+			var yd = y - n.point.y;
+			return { p: n, distance: xd*xd+yd*yd };
+		});
+		var closest = cellsWithDistance.reduce(function(prev, curr) {
+			return prev.distance < curr.distance ? prev : curr;
+		}).p;
+		return closest;
+	};
 };

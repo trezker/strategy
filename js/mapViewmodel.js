@@ -1,6 +1,7 @@
 var MapViewmodel = function() {
 	var self = this;
 	self.canvas = new Canvas("canvas");
+	self.map = null;
 
 	self.defaultMapParameters = {
 		width: 640,
@@ -15,21 +16,21 @@ var MapViewmodel = function() {
 	self.mapParameters = ko.mapping.fromJS(self.defaultMapParameters);
 
 	self.CreateMap = function() {
-		var map = new Map(ko.mapping.toJS(self.mapParameters));
+		self.map = new Map(ko.mapping.toJS(self.mapParameters));
 		
-		map.Generate();
-		ConnectIslands(map);
-		var temples = PlaceTemples(map);
+		self.map.Generate();
+		ConnectIslands(self.map);
+		var temples = PlaceTemples(self.map);
 		var players = InitiatePlayers(temples);
 
-		self.canvas.Resize(map.settings.width, map.settings.height);
+		self.canvas.Resize(self.map.settings.width, self.map.settings.height);
 
-		map.DrawPolygons(self.canvas);
-		map.DrawPoints(self.canvas);
-		map.DrawEdges(self.canvas);
-		DrawBorders(map, self.canvas);
+		self.map.DrawPolygons(self.canvas);
+		self.map.DrawPoints(self.canvas);
+		self.map.DrawEdges(self.canvas);
+		DrawBorders(self.map, self.canvas);
 		DrawTemples(temples, self.canvas);
-		DrawSoldiers(map, self.canvas);
+		DrawSoldiers(self.map, self.canvas);
 	};
 
 	self.clickMap = function(data, event) {
@@ -43,6 +44,15 @@ var MapViewmodel = function() {
 			x: coord.x,
 			y: coord.y,
 			color: "#000",
+			size: 4
+		});
+
+		var nearestCell = self.map.NearestCell(coord.x, coord.y);
+		console.log(nearestCell);
+		self.canvas.DrawPoint({
+			x: nearestCell.point.x,
+			y: nearestCell.point.y,
+			color: "#f00",
 			size: 4
 		});
 	};
