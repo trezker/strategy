@@ -37,7 +37,8 @@ var Canvas = function(elementId) {
 	};
 
 	self.DrawPoint = function(point) {
-		self.canvasContext.fillRect(point.x, point.y, 1, 1);
+ 		self.canvasContext.fillStyle = point.color;
+		self.canvasContext.fillRect(point.x - point.size/2, point.y - point.size/2, point.size, point.size);
 	};
 
 	self.DrawRect = function(rect) {

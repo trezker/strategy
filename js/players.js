@@ -35,7 +35,6 @@ NormalTowards = function(from, to) {
 	var length = Math.sqrt(n.x*n.x+n.y*n.y);
 	n.x /= length;
 	n.y /= length;
-	console.log(n);
 	return n;
 };
 

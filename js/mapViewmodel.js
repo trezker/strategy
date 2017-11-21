@@ -1,5 +1,6 @@
 var MapViewmodel = function() {
 	var self = this;
+	self.canvas = new Canvas("canvas");
 
 	self.defaultMapParameters = {
 		width: 640,
@@ -21,15 +22,29 @@ var MapViewmodel = function() {
 		var temples = PlaceTemples(map);
 		var players = InitiatePlayers(temples);
 
-		var canvas = new Canvas("canvas");
-		canvas.Resize(map.settings.width, map.settings.height);
+		self.canvas.Resize(map.settings.width, map.settings.height);
 
-		map.DrawPolygons(canvas);
-		map.DrawPoints(canvas);
-		map.DrawEdges(canvas);
-		DrawBorders(map, canvas);
-		DrawTemples(temples, canvas);
-		DrawSoldiers(map, canvas);
+		map.DrawPolygons(self.canvas);
+		map.DrawPoints(self.canvas);
+		map.DrawEdges(self.canvas);
+		DrawBorders(map, self.canvas);
+		DrawTemples(temples, self.canvas);
+		DrawSoldiers(map, self.canvas);
+	};
+
+	self.clickMap = function(data, event) {
+		var canvasPosition = $("#canvas").position();
+		var coord = {
+			x: event.pageX - canvasPosition.left,
+			y: event.pageY - canvasPosition.top
+		};
+
+		self.canvas.DrawPoint({
+			x: coord.x,
+			y: coord.y,
+			color: "#000",
+			size: 4
+		});
 	};
 };
 

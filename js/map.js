@@ -53,7 +53,12 @@ var Map = function(settings) {
 	
 	self.DrawPoints = function(canvas) {
 		for(var p in self.points) {
-			canvas.DrawPoint(self.points[p]);
+			canvas.DrawPoint({
+				x: self.points[p].x,
+				y: self.points[p].y,
+				color: "#000",
+				size: 1
+			});
 		}
 	};
 
