@@ -13,16 +13,26 @@ var InitiatePlayers = function(temples) {
 
 var DrawSoldiers = function(map, canvas) {
 	for(var i in map.centers) {
-		var soldiers = map.centers[i].soldiers;
-		if(soldiers > 0) {
-			canvas.DrawText({
-				text: soldiers,
-				x: map.centers[i].point.x,
-				y: map.centers[i].point.y + 20,
-				color: "#000",
-				align: "center"
-			});
+		DrawCellSoldiers(map.centers[i], canvas);
+	}
+};
+
+var DrawCellSoldiers = function(cell, canvas) {
+	var soldiers = cell.soldiers;
+	if(soldiers > 0) {
+		var color = "#000";
+		var text = soldiers;
+		if(cell.markedsoldiers) {
+			color = "#fff";
+			text = cell.markedsoldiers + " / " + soldiers;
 		}
+		canvas.DrawText({
+			text: text,
+			x: cell.point.x,
+			y: cell.point.y + 20,
+			color: color,
+			align: "center"
+		});
 	}
 };
 

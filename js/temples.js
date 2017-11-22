@@ -7,7 +7,10 @@ var PlaceTemples = function(map) {
 	return temples;
 };
 
-var DrawTemples = function(temples, canvas) {
+var DrawTemples = function(map, canvas) {
+	var temples = map.centers.filter(function(c) {
+		return c.temple;
+	});
 	for(var i in temples) {
 		canvas.DrawRect({
 			x: temples[i].point.x - 5,

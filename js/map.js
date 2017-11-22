@@ -78,7 +78,7 @@ var Map = function(settings) {
 
 	self.biomeColors = {
 		"ocean": "#00f",
-		"land": "#0f0",
+		"land": "#0a0",
 		"isle": "#f0f"
 	};
 

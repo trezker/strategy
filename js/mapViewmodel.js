@@ -24,12 +24,15 @@ var MapViewmodel = function() {
 		var players = InitiatePlayers(temples);
 
 		self.canvas.Resize(self.map.settings.width, self.map.settings.height);
+		self.DrawMap();
+	};
 
+	self.DrawMap = function() {
 		self.map.DrawPolygons(self.canvas);
 		self.map.DrawPoints(self.canvas);
 		self.map.DrawEdges(self.canvas);
 		DrawBorders(self.map, self.canvas);
-		DrawTemples(temples, self.canvas);
+		DrawTemples(self.map, self.canvas);
 		DrawSoldiers(self.map, self.canvas);
 	};
 
@@ -40,21 +43,23 @@ var MapViewmodel = function() {
 			y: event.pageY - canvasPosition.top
 		};
 
-		self.canvas.DrawPoint({
-			x: coord.x,
-			y: coord.y,
-			color: "#000",
-			size: 4
-		});
+		var cell = self.map.NearestCell(coord.x, coord.y);
 
-		var nearestCell = self.map.NearestCell(coord.x, coord.y);
-		console.log(nearestCell);
-		self.canvas.DrawPoint({
-			x: nearestCell.point.x,
-			y: nearestCell.point.y,
-			color: "#f00",
-			size: 4
-		});
+		if(cell.soldiers) {
+			if(cell.markedsoldiers) {
+				cell.markedsoldiers++;
+				if(cell.markedsoldiers > cell.soldiers) {
+					cell.markedsoldiers = 1;
+				}
+			}
+			else {
+				for(c in self.map.centers) {
+					self.map.centers[c].markedsoldiers = null;
+				}
+				cell.markedsoldiers = cell.soldiers;
+			}
+			self.DrawMap();
+		}
 	};
 };
 
