@@ -36,6 +36,7 @@ var MapViewmodel = function() {
 		DrawSoldiers(self.map, self.canvas);
 	};
 
+	self.markedCell = null;
 	self.clickMap = function(data, event) {
 		var canvasPosition = $("#canvas").position();
 		var coord = {
@@ -45,21 +46,37 @@ var MapViewmodel = function() {
 
 		var cell = self.map.NearestCell(coord.x, coord.y);
 
-		if(cell.soldiers) {
-			if(cell.markedsoldiers) {
+		if(self.markedCell) {
+			if(self.markedCell === cell) {
 				cell.markedsoldiers++;
 				if(cell.markedsoldiers > cell.soldiers) {
 					cell.markedsoldiers = 1;
 				}
 			}
-			else {
-				for(c in self.map.centers) {
-					self.map.centers[c].markedsoldiers = null;
-				}
-				cell.markedsoldiers = cell.soldiers;
+			if(self.markedCell.neighbors.indexOf(cell) != -1) {
+				cell.soldiers = self.markedCell.soldiers;
+				cell.owner = self.markedCell.owner;
+				self.markedCell.soldiers = null;
+				self.markedCell.markedsoldiers = null;
+				self.markedCell = null;
 			}
-			self.DrawMap();
+			else {
+				if(cell.soldiers) {
+					self.markedCell.markedsoldiers = null;
+					self.markedCell = null;
+
+					cell.markedsoldiers = cell.soldiers;
+					self.markedCell = cell;
+				}
+			}
 		}
+		else {
+			if(cell.soldiers) {
+				cell.markedsoldiers = cell.soldiers;
+				self.markedCell = cell;
+			}
+		}
+		self.DrawMap();
 	};
 };
 
