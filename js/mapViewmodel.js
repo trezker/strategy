@@ -55,7 +55,7 @@ var MapViewmodel = function() {
 					cell.markedsoldiers = 1;
 				}
 			}
-			if(self.markedCell.neighbors.indexOf(cell) != -1) {
+			if(self.map.CellsAreNeighbors(self.markedCell, cell) && !cell.water) {
 				cell.soldiers = self.markedCell.soldiers;
 				cell.owner = self.markedCell.owner;
 				self.markedCell.soldiers = null;

@@ -438,4 +438,8 @@ var Map = function(settings) {
 		}).p;
 		return closest;
 	};
+
+	self.CellsAreNeighbors = function(cell1, cell2) {
+		return cell1.neighbors.indexOf(cell2) != -1;
+	};
 };
