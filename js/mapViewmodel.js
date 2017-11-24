@@ -31,7 +31,6 @@ var MapViewmodel = function() {
 
 	self.DrawMap = function() {
 		self.map.DrawPolygons(self.canvas);
-		self.map.DrawPoints(self.canvas);
 		self.map.DrawEdges(self.canvas);
 		DrawBorders(self.map, self.canvas);
 		DrawTemples(self.map, self.canvas);

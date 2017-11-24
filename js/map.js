@@ -64,11 +64,14 @@ var Map = function(settings) {
 
 	self.DrawEdges = function(canvas) {
 		var lines = self.edges.map(function(a) {
+			console.log(a);
 			return {
 				from: a.v0.point,
-				to: a.v1.point
+				to: a.v1.point,
+				water: a.d0 && a.d0.water && a.d1 && a.d1.water
 			};
 		});
+		lines = lines.filter(function(a) { return !a.water; });
 		canvas.DrawLines({
 			color: "#000",
 			lines: lines,
