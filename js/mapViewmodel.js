@@ -2,6 +2,8 @@ var MapViewmodel = function() {
 	var self = this;
 	self.canvas = new Canvas("canvas");
 	self.map = null;
+	self.players = null;
+	self.currentPlayer = 0;
 
 	self.defaultMapParameters = {
 		width: 640,
@@ -21,7 +23,7 @@ var MapViewmodel = function() {
 		self.map.Generate();
 		ConnectIslands(self.map);
 		var temples = PlaceTemples(self.map);
-		var players = InitiatePlayers(temples);
+		self.players = InitiatePlayers(temples);
 
 		self.canvas.Resize(self.map.settings.width, self.map.settings.height);
 		self.DrawMap();
@@ -61,22 +63,23 @@ var MapViewmodel = function() {
 				self.markedCell = null;
 			}
 			else {
-				if(cell.soldiers) {
-					self.markedCell.markedsoldiers = null;
-					self.markedCell = null;
-
-					cell.markedsoldiers = cell.soldiers;
-					self.markedCell = cell;
-				}
+				self.markedCell.markedsoldiers = null;
+				self.markedCell = null;
+				self.markAllSoldiersIfOwned(cell);
 			}
 		}
 		else {
-			if(cell.soldiers) {
-				cell.markedsoldiers = cell.soldiers;
-				self.markedCell = cell;
-			}
+			self.markAllSoldiersIfOwned(cell);
 		}
+
 		self.DrawMap();
+	};
+
+	self.markAllSoldiersIfOwned = function(cell) {
+		if(cell.owner === self.players[self.currentPlayer] && cell.soldiers) {
+			cell.markedsoldiers = cell.soldiers;
+			self.markedCell = cell;
+		}
 	};
 };
 
