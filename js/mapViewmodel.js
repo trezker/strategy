@@ -56,11 +56,7 @@ var MapViewmodel = function() {
 				}
 			}
 			if(self.map.CellsAreNeighbors(self.markedCell, cell) && !cell.water) {
-				cell.soldiers = self.markedCell.soldiers;
-				cell.owner = self.markedCell.owner;
-				self.markedCell.soldiers = null;
-				self.markedCell.markedsoldiers = null;
-				self.markedCell = null;
+				self.moveSoldiers(cell);
 			}
 			else {
 				self.markedCell.markedsoldiers = null;
@@ -80,6 +76,14 @@ var MapViewmodel = function() {
 			cell.markedsoldiers = cell.soldiers;
 			self.markedCell = cell;
 		}
+	};
+
+	self.moveSoldiers = function(cell) {
+		cell.soldiers = self.markedCell.soldiers;
+		cell.owner = self.markedCell.owner;
+		self.markedCell.soldiers = null;
+		self.markedCell.markedsoldiers = null;
+		self.markedCell = null;
 	};
 };
 
