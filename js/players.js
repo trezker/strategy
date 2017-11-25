@@ -62,6 +62,16 @@ MultiplyPoint = function(p, f) {
 	};
 };
 
+PlayerColor = function(index) {
+	var playercolors = [
+		"rgba(255,255,  0,1)",
+		"rgba(255,  0,255,1)",
+		"rgba(  0,255,255,1)",
+		"rgba(255,  0,  0,1)"
+	];
+	return playercolors[index];
+};
+
 DrawBorders = function(map, canvas) {
 	/*
 	for(var i in map.centers) {
@@ -102,15 +112,9 @@ DrawBorders = function(map, canvas) {
 			lines[playerId] = lines[playerId].concat(cellLines);
 		}
 	}
- 	var playercolors = [
- 		"rgba(255,255,  0,1)",
- 		"rgba(255,  0,255,1)",
- 		"rgba(  0,255,255,1)",
- 		"rgba(255,  0,  0,1)"
- 	];
 	for(var i in lines) {
 		canvas.DrawLines({
-			color: playercolors[i],
+			color: PlayerColor(i),
 			lines: lines[i],
 			width: 4
 		});

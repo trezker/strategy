@@ -4,6 +4,7 @@ var MapViewmodel = function() {
 	self.map = null;
 	self.players = null;
 	self.currentPlayer = 0;
+	self.currentPlayerColor = ko.observable(PlayerColor(self.currentPlayer));
 
 	self.defaultMapParameters = {
 		width: 640,
@@ -58,8 +59,7 @@ var MapViewmodel = function() {
 				self.moveSoldiers(cell);
 			}
 			else {
-				self.markedCell.markedsoldiers = null;
-				self.markedCell = null;
+				self.deselect();
 				self.markAllSoldiersIfOwned(cell);
 			}
 		}
@@ -81,8 +81,24 @@ var MapViewmodel = function() {
 		cell.soldiers = self.markedCell.soldiers;
 		cell.owner = self.markedCell.owner;
 		self.markedCell.soldiers = null;
-		self.markedCell.markedsoldiers = null;
-		self.markedCell = null;
+		self.deselect();
+	};
+
+	self.endTurn = function() {
+		self.deselect();
+		self.currentPlayer++;
+		if(self.currentPlayer >= self.players.length) {
+			self.currentPlayer = 0;
+		}
+		self.currentPlayerColor(PlayerColor(self.currentPlayer));
+		self.DrawMap();
+	};
+
+	self.deselect = function() {
+		if(self.markedCell) {
+			self.markedCell.markedsoldiers = null;
+			self.markedCell = null;
+		}
 	};
 };
 

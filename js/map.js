@@ -64,7 +64,6 @@ var Map = function(settings) {
 
 	self.DrawEdges = function(canvas) {
 		var lines = self.edges.map(function(a) {
-			console.log(a);
 			return {
 				from: a.v0.point,
 				to: a.v1.point,

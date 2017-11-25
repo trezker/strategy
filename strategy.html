@@ -6,6 +6,15 @@
 	<body>
 		<div id="flex">
 			<div>
+				<div class="form-group" >
+					<label class="control-label">Current player</label>
+					<div data-bind="style: { backgroundColor: currentPlayerColor, height: '2em', margin: 0 }"></div>
+				</div>
+				<div class="form-group">
+					<button data-bind="click: endTurn" class="btn btn-primary">End turn</button>
+				</div>
+			</div>
+			<div>
 				<canvas id="canvas" style="border:0px solid #000000;" data-bind="click: clickMap"></canvas>
 			</div>
 			<div>
