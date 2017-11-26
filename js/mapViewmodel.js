@@ -74,19 +74,25 @@ var MapViewmodel = function() {
 	};
 
 	self.markAllSoldiersIfOwned = function(cell) {
-		if(cell.owner === self.players[self.currentPlayer] && cell.soldiers) {
+		if(cell.owner === self.players[self.currentPlayer] && cell.soldiers && self.occupiedCellsThisTurn.indexOf(cell) == -1) {
 			cell.markedsoldiers = cell.soldiers;
 			self.markedCell = cell;
 		}
 	};
 
+	self.occupiedCellsThisTurn = [];
 	self.moveSoldiers = function(cell) {
 		if(self.movesLeft() <= 0) {
 			return;
 		}
 		self.movesLeft(self.movesLeft() - 1);
+
+		if(cell.owner != self.markedCell.owner) {
+			self.occupiedCellsThisTurn.push(cell);
+		}
 		cell.soldiers = self.markedCell.soldiers;
 		cell.owner = self.markedCell.owner;
+		
 		self.markedCell.soldiers = null;
 		self.deselect();
 	};
@@ -99,6 +105,7 @@ var MapViewmodel = function() {
 		}
 		self.movesLeft(3);
 		self.currentPlayerColor(PlayerColor(self.currentPlayer));
+		self.occupiedCellsThisTurn = [];
 		self.DrawMap();
 	};
 
