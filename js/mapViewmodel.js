@@ -92,11 +92,38 @@ var MapViewmodel = function() {
 		if(cell.owner != self.markedCell.owner) {
 			self.occupiedCellsThisTurn.push(cell);
 		}
-		cell.soldiers = self.markedCell.markedsoldiers;
-		cell.owner = self.markedCell.owner;
-		
-		self.markedCell.soldiers -= self.markedCell.markedsoldiers;
+		self.battle(cell);
 		self.deselect();
+	};
+
+	self.battle = function(cell) {
+		if(cell.owner && cell.owner !== self.markedCell.owner) {
+			if(cell.soldiers > 0) {
+				console.log("fighting");
+				var r = getRandomInt(0, cell.soldiers + self.markedCell.markedsoldiers);
+				if(r > cell.soldiers) {
+					cell.soldiers--;
+				}
+				else {
+					self.markedCell.markedsoldiers--;
+					self.markedCell.soldiers--;
+				}
+			}
+			if(!cell.soldiers) {
+				console.log("Won");
+				cell.owner = null;
+			}
+			if(self.markedCell.markedsoldiers > 0) {
+				self.battle(cell);
+			}
+			console.log("Lost");
+		}
+		else {
+			cell.soldiers = self.markedCell.markedsoldiers;
+			cell.owner = self.markedCell.owner;
+			
+			self.markedCell.soldiers -= self.markedCell.markedsoldiers;
+		}
 	};
 
 	self.endTurn = function() {
