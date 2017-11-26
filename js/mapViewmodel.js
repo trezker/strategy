@@ -100,6 +100,11 @@ var MapViewmodel = function() {
 	};
 
 	self.endTurn = function() {
+		self.map.centers.forEach(function(cell) {
+			if(cell.temple && cell.owner === self.players[self.currentPlayer]) {
+				cell.soldiers++;
+			}
+		});
 		self.deselect();
 		self.currentPlayer++;
 		if(self.currentPlayer >= self.players.length) {
