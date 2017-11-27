@@ -115,7 +115,7 @@ var MapViewmodel = function() {
 						}
 					}
 					if(!cell.soldiers) {
-						cell.owner = null;
+						self.DefeatedCell(cell);
 						self.inBattle = false;
 					}
 					if(self.markedCell.markedsoldiers > 0) {
@@ -138,18 +138,46 @@ var MapViewmodel = function() {
 			battleRound();
 		});
 	};
+	
+	self.DefeatedCell = function(cell) {
+		var owner = cell.owner;
+		cell.owner = null;
+		var anythingLeft = self.map.centers.find(function(c) {
+			return c.owner === owner && (c.soldiers > 0 || c.temple);
+		});
+		if(!anythingLeft) {
+			owner.dead = true;
+			self.map.centers.forEach(function(cell) {
+				if(cell.owner === owner) {
+					cell.owner = null;
+				}
+			});
+		}
+		console.log(anythingLeft);
+	};
 
 	self.endTurn = function() {
+		//Finish turn
 		self.map.centers.forEach(function(cell) {
 			if(cell.temple && cell.owner === self.players[self.currentPlayer]) {
 				cell.soldiers++;
 			}
 		});
 		self.deselect();
-		self.currentPlayer++;
-		if(self.currentPlayer >= self.players.length) {
-			self.currentPlayer = 0;
+
+		//Find next player
+		function findNextPlayer() {
+			self.currentPlayer++;
+			if(self.currentPlayer >= self.players.length) {
+				self.currentPlayer = 0;
+			}
+			if(self.players[self.currentPlayer].dead) {
+				findNextPlayer();
+			}
 		}
+		findNextPlayer();
+
+		//Initiate new turn
 		self.movesLeft(3);
 		self.currentPlayerColor(PlayerColor(self.currentPlayer));
 		self.occupiedCellsThisTurn = [];
