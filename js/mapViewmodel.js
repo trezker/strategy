@@ -127,7 +127,7 @@ var MapViewmodel = function() {
 					}
 				}
 				else {
-					cell.soldiers += self.markedCell.markedsoldiers;
+					cell.soldiers = (cell.soldiers || 0) + self.markedCell.markedsoldiers;
 					cell.owner = self.markedCell.owner;
 					
 					self.markedCell.soldiers -= self.markedCell.markedsoldiers;
