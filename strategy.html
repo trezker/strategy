@@ -6,6 +6,10 @@
 	<body>
 		<div id="flex">
 			<div>
+				<div class="form-group" data-bind="visible: gameWon">
+					<label class="control-label">Winner</label>
+					<div data-bind="style: { backgroundColor: winner.color, height: '2em', margin: 0 }"></div>
+				</div>
 				<div class="form-group" >
 					<label class="control-label">Current player</label>
 					<div data-bind="style: { backgroundColor: currentPlayerColor, height: '2em', margin: 0 }"></div>

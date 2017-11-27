@@ -6,6 +6,11 @@ var MapViewmodel = function() {
 	self.currentPlayer = 0;
 	self.currentPlayerColor = ko.observable(PlayerColor(self.currentPlayer));
 	self.movesLeft = ko.observable(3);
+	self.winner = ko.mapping.fromJS({
+		name: "",
+		color: "#000"
+	});
+	self.gameWon = ko.observable(false);
 
 	self.defaultMapParameters = {
 		width: 640,
@@ -102,7 +107,6 @@ var MapViewmodel = function() {
 		return new Promise((resolve, reject) => {
 			self.inBattle = true;
 			function battleRound() {
-				console.log("battle");
 				if(cell.owner && cell.owner !== self.markedCell.owner) {
 					if(cell.soldiers > 0) {
 						var r = getRandomInt(0, cell.soldiers + self.markedCell.markedsoldiers);
@@ -147,13 +151,21 @@ var MapViewmodel = function() {
 		});
 		if(!anythingLeft) {
 			owner.dead = true;
+
 			self.map.centers.forEach(function(cell) {
 				if(cell.owner === owner) {
 					cell.owner = null;
 				}
 			});
+
+			var livingPlayers = self.players.filter(function(p) {
+				return !p.dead;
+			});
+			if(livingPlayers.length == 1) {
+				self.gameWon(true);
+				self.winner.color(PlayerColor(livingPlayers[0].id));
+			}
 		}
-		console.log(anythingLeft);
 	};
 
 	self.endTurn = function() {
