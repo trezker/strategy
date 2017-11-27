@@ -92,38 +92,51 @@ var MapViewmodel = function() {
 		if(cell.owner != self.markedCell.owner) {
 			self.occupiedCellsThisTurn.push(cell);
 		}
-		self.battle(cell);
-		self.deselect();
+		self.battle(cell).then(() => {
+			self.deselect();
+			self.DrawMap();
+		});
 	};
 
 	self.battle = function(cell) {
-		if(cell.owner && cell.owner !== self.markedCell.owner) {
-			if(cell.soldiers > 0) {
-				console.log("fighting");
-				var r = getRandomInt(0, cell.soldiers + self.markedCell.markedsoldiers);
-				if(r > cell.soldiers) {
-					cell.soldiers--;
+		return new Promise((resolve, reject) => {
+			self.inBattle = true;
+			function battleRound() {
+				console.log("battle");
+				if(cell.owner && cell.owner !== self.markedCell.owner) {
+					if(cell.soldiers > 0) {
+						var r = getRandomInt(0, cell.soldiers + self.markedCell.markedsoldiers);
+						if(r > cell.soldiers) {
+							cell.soldiers--;
+						}
+						else {
+							self.markedCell.markedsoldiers--;
+							self.markedCell.soldiers--;
+						}
+					}
+					if(!cell.soldiers) {
+						cell.owner = null;
+						self.inBattle = false;
+					}
+					if(self.markedCell.markedsoldiers > 0) {
+						self.DrawMap();
+						setTimeout(battleRound, 100);
+					}
+					else {
+						resolve();
+					}
 				}
 				else {
-					self.markedCell.markedsoldiers--;
-					self.markedCell.soldiers--;
+					cell.soldiers += self.markedCell.markedsoldiers;
+					cell.owner = self.markedCell.owner;
+					
+					self.markedCell.soldiers -= self.markedCell.markedsoldiers;
+					self.inBattle = false;
+					resolve();
 				}
 			}
-			if(!cell.soldiers) {
-				console.log("Won");
-				cell.owner = null;
-			}
-			if(self.markedCell.markedsoldiers > 0) {
-				self.battle(cell);
-			}
-			console.log("Lost");
-		}
-		else {
-			cell.soldiers = self.markedCell.markedsoldiers;
-			cell.owner = self.markedCell.owner;
-			
-			self.markedCell.soldiers -= self.markedCell.markedsoldiers;
-		}
+			battleRound();
+		});
 	};
 
 	self.endTurn = function() {
