@@ -6,26 +6,31 @@
 	<body>
 		<div id="flex">
 			<div>
+				<div class="form-group">
+					<button data-bind="click: NewGame" class="btn btn-primary">New game</button>
+				</div>
+
 				<div class="form-group" data-bind="visible: gameWon">
 					<label class="control-label">Winner</label>
 					<div data-bind="style: { backgroundColor: winner.color, height: '2em', margin: 0 }"></div>
 				</div>
-				<div class="form-group" >
+
+				<div class="form-group" data-bind="visible: !gameWon()">
 					<label class="control-label">Current player</label>
 					<div data-bind="style: { backgroundColor: currentPlayerColor, height: '2em', margin: 0 }"></div>
 				</div>
-				<div class="form-group" >
+				<div class="form-group" data-bind="visible: !gameWon()">
 					<label class="control-label">Moves left</label>
 					<label data-bind="text: movesLeft"></label>
 				</div>
-				<div class="form-group">
+				<div class="form-group" data-bind="visible: !gameWon()">
 					<button data-bind="click: endTurn" class="btn btn-primary">End turn</button>
 				</div>
 			</div>
 			<div>
 				<canvas id="canvas" style="border:0px solid #000000;" data-bind="click: clickMap"></canvas>
 			</div>
-			<div>
+			<div style="display: none;">
 				<div class="form-group">
 					<label class="control-label">Seed</label>
 					<input type="text" class="form-control" data-bind="value: mapParameters.seed" />

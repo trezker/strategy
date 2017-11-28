@@ -24,6 +24,16 @@ var MapViewmodel = function() {
 
 	self.mapParameters = ko.mapping.fromJS(self.defaultMapParameters);
 
+	self.NewGame = function() {
+		self.gameWon(false);
+		self.movesLeft(3);
+		self.currentPlayer = 0;
+		self.currentPlayerColor(PlayerColor(self.currentPlayer));
+		var r = getRandomInt(0, Number.MAX_SAFE_INTEGER);
+		self.mapParameters.seed(r);
+		self.CreateMap();
+	};
+
 	self.CreateMap = function() {
 		self.map = new Map(ko.mapping.toJS(self.mapParameters));
 		
