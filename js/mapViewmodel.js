@@ -99,17 +99,20 @@ var MapViewmodel = function() {
 
 	self.occupiedCellsThisTurn = [];
 	self.moveSoldiers = function(cell) {
-		if(self.movesLeft() <= 0) {
-			return;
-		}
-		self.movesLeft(self.movesLeft() - 1);
+		return new Promise((resolve, reject) => {
+			if(self.movesLeft() <= 0) {
+				return;
+			}
+			self.movesLeft(self.movesLeft() - 1);
 
-		if(cell.owner != self.markedCell.owner) {
-			self.occupiedCellsThisTurn.push(cell);
-		}
-		self.battle(cell).then(() => {
-			self.deselect();
-			self.DrawMap();
+			if(cell.owner != self.markedCell.owner) {
+				self.occupiedCellsThisTurn.push(cell);
+			}
+			self.battle(cell).then(() => {
+				self.deselect();
+				self.DrawMap();
+				resolve();
+			});
 		});
 	};
 
@@ -211,9 +214,16 @@ var MapViewmodel = function() {
 	self.runAI = function() {
 		var ai = self.players[self.currentPlayer].ai;
 		if(ai) {
-			var action = ai();
+			var action = ai(self);
 			if(action.action == "End turn") {
 				self.endTurn();
+			}
+			if(action.action == "Move") {
+				self.markedCell = action.from;
+				self.markedCell.markedsoldiers = action.soldiers;
+				self.moveSoldiers(action.to).then(() => {
+					//self.runAI();
+				});
 			}
 		}
 	}
