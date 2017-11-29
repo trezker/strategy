@@ -204,7 +204,19 @@ var MapViewmodel = function() {
 		self.currentPlayerColor(PlayerColor(self.currentPlayer));
 		self.occupiedCellsThisTurn = [];
 		self.DrawMap();
+
+		self.runAI();
 	};
+
+	self.runAI = function() {
+		var ai = self.players[self.currentPlayer].ai;
+		if(ai) {
+			var action = ai();
+			if(action.action == "End turn") {
+				self.endTurn();
+			}
+		}
+	}
 
 	self.deselect = function() {
 		if(self.markedCell) {
