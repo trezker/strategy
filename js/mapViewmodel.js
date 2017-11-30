@@ -214,15 +214,18 @@ var MapViewmodel = function() {
 	self.runAI = function() {
 		var ai = self.players[self.currentPlayer].ai;
 		if(ai) {
+			console.log("runAI");
 			var action = ai(self);
 			if(action.action == "End turn") {
+				console.log("endturn");
 				self.endTurn();
 			}
 			if(action.action == "Move") {
+				console.log("Move");
 				self.markedCell = action.from;
 				self.markedCell.markedsoldiers = action.soldiers;
 				self.moveSoldiers(action.to).then(() => {
-					//self.runAI();
+					self.runAI();
 				});
 			}
 		}
